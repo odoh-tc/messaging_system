@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+celery
+pydantic
+aiofiles
+jinja2
