@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query
+from pydantic import EmailStr
 from datetime import datetime
 import logging
 from .tasks import send_email
@@ -9,10 +10,12 @@ app = FastAPI()
 logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO)
 
 @app.get("/")
-async def root(sendmail: str = Query(None), talktome: bool = Query(False)):
+async def root(sendmail: EmailStr = Query(None), talktome: bool = Query(False)):
     if sendmail:
         send_email.delay(sendmail)
-        return {"message": f"Email task queued for {sendmail}"}
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logging.info(f"Email task queued for {sendmail} at {current_time} to be sent")
+        return {"message": f"Email task queued for {sendmail} to be sent"}
     
     if talktome:
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
