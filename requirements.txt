@@ -1,6 +1,6 @@
 fastapi
 uvicorn
 celery
-pydantic
+pydantic[email]  # This line installs the email-validator dependency
 aiofiles
 jinja2
